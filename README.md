@@ -8,6 +8,8 @@ Two AI coding agents — **Claude** (Anthropic, Claude Code) and **Codex** (Open
 
 This is **peer collaboration, not handoff.** Nobody is "leaving" and passing a baton. Both agents are equal authors of one living journal, with a defined division of labor and a verifiable handoff field on every entry.
 
+And because every round is written down, you get to read the whole back-and-forth — who did what, what was verified, what's still open. **You stop being the messenger between two AIs and become the reviewer watching over both.**
+
 ```mermaid
 flowchart LR
     C["🟣 <b>Claude</b> (lead)<br/>plan · implement · run · verify"]
