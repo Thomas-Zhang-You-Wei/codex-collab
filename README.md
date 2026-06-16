@@ -1,0 +1,85 @@
+# codex-collab
+
+**A Claude Code skill that makes Claude and Codex co-own one project through a shared, append-only daily journal.**
+
+Two AI coding agents — **Claude** (Anthropic, Claude Code) and **Codex** (OpenAI, Codex CLI) — work on the same repo. They don't share memory. Their only shared memory is a `collab_log/` folder of daily handoff entries that *both* agents read on start and write on finish.
+
+This is **peer collaboration, not handoff.** Nobody is "leaving" and passing a baton. Both agents are equal authors of one living journal, with a defined division of labor and a verifiable handoff field on every entry.
+
+---
+
+## Why this exists
+
+Plenty of tools let Claude and Codex talk to each other (MCP bridges) or let one session hand off to the next (handoff docs). What was missing is a lightweight, dependency-free, **peer co-ownership** model. Here's how it differs from the closest neighbors:
+
+| Project | Mechanism | How codex-collab differs |
+|---|---|---|
+| Handoff skills (`HANDOFF.md`, etc.) | One-shot context doc for the *next* agent | Continuous co-ownership, not a one-time baton pass |
+| `session-handoff` (`SESSION_LOG.md`) | Single overwritten file, session memory | **Per-day append-only files + index** (full history), peer division of labor, wires *both* `CLAUDE.md` and `AGENTS.md` |
+| MCP bridges / Byterover | Call-and-respond, or external memory service | **Zero dependency** — plain markdown in your repo, human-readable, git-friendly |
+| Orchestrators (kanban, daemons, fleets) | Heavyweight multi-agent platforms | One skill + a folder. No infra. |
+
+In short: the *mechanism* (a shared markdown log) isn't new — the **specific packaging** is: an append-only daily journal with a `did / verify / files / handoff` schema, peer framing, dual-file wiring, and Codex-MCP delegation, all in plain markdown.
+
+---
+
+## How it works
+
+1. **Bootstrap once per project** — creates `collab_log/INDEX.md` + today's day file, and pastes an "Always Do First" block into both `CLAUDE.md` (for Claude) and `AGENTS.md` (for Codex) so both agents are routed to the journal.
+2. **On start** — read `INDEX.md` (rules + the live `🔴 現在進行中 / open threads` block + recent summaries) and today's day file.
+3. **On finish** — prepend an entry to today's day file and overwrite the open-threads block.
+4. **Delegate to Codex** — Claude calls Codex via the Codex MCP for an independent second opinion / review / alternative, then logs the result.
+
+The journal is **dual-track**: history is append-only (auditable, never edited), while the single "open threads" block is overwritten each session (always current, cheap to read).
+
+### Default division of labor
+
+- **Claude (lead):** planning, implementation, running the server, screenshot verification, writing the log.
+- **Codex (second opinion):** code review, alternative approaches, bug hunting, copy/layout review, independent verification.
+
+Adjustable per project — but "whoever touched what gets written to the log" is non-negotiable.
+
+---
+
+## Install
+
+This is a Claude Code skill. Clone it into your skills directory:
+
+```bash
+git clone https://github.com/Thomas-Zhang-You-Wei/codex-collab.git ~/.claude/skills/codex-collab
+```
+
+Then in any project, tell Claude: **「啟動 codex 協作」** / "start codex collab" and it loads the skill.
+
+### Requirements
+
+- **Claude Code** (the skill runs here).
+- **Codex CLI** registered as an MCP server, so Claude can delegate to it:
+  ```bash
+  claude mcp add --scope user codex -- codex mcp-server
+  ```
+- **A ChatGPT account for Codex.** You do **not** need a paid plan — Codex is included on the **free** ChatGPT tier (and Go/Plus/Pro/Business/Edu/Enterprise); the free tier just has tighter rate limits. Sign in with your ChatGPT account, no API key required. ([OpenAI docs](https://help.openai.com/en/articles/11369540-using-codex-with-your-chatgpt-plan))
+
+---
+
+## Repo layout
+
+```
+codex-collab/
+├── SKILL.md                     ← the skill (workflow + rules)
+├── templates/
+│   ├── INDEX.template.md        ← collab_log index (rules + open-threads + day index)
+│   ├── DAY.template.md          ← daily file template
+│   ├── CLAUDE-snippet.md        ← paste into project CLAUDE.md (routes Claude to the log)
+│   └── AGENTS-snippet.md        ← paste into project AGENTS.md (routes Codex to the log)
+└── examples/
+    └── collab_log/              ← a worked example you can read to learn the format
+```
+
+> Note: the skill prompts and templates are currently in **Traditional Chinese (zh-Hant)**. An English translation is on the roadmap — contributions welcome.
+
+---
+
+## License
+
+MIT — see [LICENSE](LICENSE).
