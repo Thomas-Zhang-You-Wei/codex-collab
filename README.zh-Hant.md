@@ -28,7 +28,7 @@ flowchart LR
 
 ## 為什麼需要這個
 
-讓 Claude 和 Codex 互相溝通的工具很多(MCP bridge),讓一個 session 交棒給下一個的也有(handoff 文件)。缺的是一個輕量、零依賴的 **對等共有(peer co-ownership)** 模型。跟最接近的鄰居比:
+讓 Claude 和 Codex 互相溝通的工具很多(MCP bridge),讓一個 session 交棒給下一個的也有(handoff 文件)。缺的是一個輕量、零依賴的 **對等共有(peer co-ownership)** 模型。跟最接近的skills比:
 
 | 專案 | 機制 | codex-collab 的差別 |
 |---|---|---|
