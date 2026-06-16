@@ -61,12 +61,14 @@ cp -r ~/.claude/skills/codex-collab/i18n/zh-Hant/. ~/.claude/skills/codex-collab
 
 ### 需求
 
-- **Claude Code**(skill 在這裡執行)。
+- **Claude Code** + **付費的 Claude 方案**(Pro 或 Max),或 Anthropic API 計費 —— skill 在這裡執行,**這也是唯一要付費的東西**。
 - **Codex CLI** 註冊成 MCP server,讓 Claude 可以委派給它:
   ```bash
   claude mcp add --scope user codex -- codex mcp-server
   ```
-- **一個給 Codex 用的 ChatGPT 帳號。** 你**不需要**付費方案 —— Codex 包含在**免費** ChatGPT 方案裡(以及 Go/Plus/Pro/Business/Edu/Enterprise);免費版只是 rate limit 較緊。用 ChatGPT 帳號登入即可,不需要 API key。([OpenAI 文件](https://help.openai.com/en/articles/11369540-using-codex-with-your-chatgpt-plan))
+- **一個給 Codex 用的 ChatGPT 帳號 —— 免費版就夠。** Codex 包含在**免費** ChatGPT 方案裡(以及 Go/Plus/Pro/Business/Edu/Enterprise);免費版只是 rolling-window rate limit 較緊,連續猛委派可能會短暫撞到限流。用 ChatGPT 帳號登入即可,不需要 API key。([OpenAI 文件](https://help.openai.com/en/articles/11369540-using-codex-with-your-chatgpt-plan))
+
+> **費用一句話:** 唯一要付費的是 Claude 訂閱。Codex 拿免費額度就能跑 —— 只有當你經常撞到免費限流時,才需要 ChatGPT 付費方案。
 
 ---
 

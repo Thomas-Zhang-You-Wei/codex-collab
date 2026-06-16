@@ -55,12 +55,14 @@ Then in any project, tell Claude: **「啟動 codex 協作」** / "start codex c
 
 ### Requirements
 
-- **Claude Code** (the skill runs here).
+- **Claude Code** with a **paid Claude plan** (Pro or Max), or Anthropic API billing — the skill runs here, and this is the only thing you have to pay for.
 - **Codex CLI** registered as an MCP server, so Claude can delegate to it:
   ```bash
   claude mcp add --scope user codex -- codex mcp-server
   ```
-- **A ChatGPT account for Codex.** You do **not** need a paid plan — Codex is included on the **free** ChatGPT tier (and Go/Plus/Pro/Business/Edu/Enterprise); the free tier just has tighter rate limits. Sign in with your ChatGPT account, no API key required. ([OpenAI docs](https://help.openai.com/en/articles/11369540-using-codex-with-your-chatgpt-plan))
+- **A ChatGPT account for Codex — the free tier is enough.** Codex is included on the **free** ChatGPT plan (and Go/Plus/Pro/Business/Edu/Enterprise); the free tier just has a tighter rolling-window rate limit, so heavy back-to-back delegation may hit a brief pause. Sign in with your ChatGPT account, no API key required. ([OpenAI docs](https://help.openai.com/en/articles/11369540-using-codex-with-your-chatgpt-plan))
+
+> **Cost in one line:** the only paid requirement is a Claude subscription. Codex runs on its free quota — you'd only need a paid ChatGPT plan if you regularly hit the free rate limit.
 
 ---
 
