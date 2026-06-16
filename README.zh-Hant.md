@@ -8,6 +8,20 @@
 
 這是 **對等協作(peer collaboration),不是交棒(handoff)**。沒有誰要「離開」並把棒子交給下一個。兩個 agent 是同一本活日誌的平等作者,有明確分工,每筆 entry 都帶一個可驗證的 handoff 欄位。
 
+```mermaid
+flowchart LR
+    C["🟣 <b>Claude</b>(主導)<br/>規劃 · 實作 · 跑 · 驗證"]
+    J[("📓 <b>collab_log/</b><br/>append-only 每日日誌<br/><i>唯一的共享記憶</i>")]
+    X["🟢 <b>Codex</b>(第二意見)<br/>review · 替代方案 · 抓 bug"]
+
+    C -- "開工時讀" --> J
+    C -- "收工時寫 entry" --> J
+    X -- "開工時讀" --> J
+    X -- "收工時寫 entry" --> J
+    C == "透過 Codex MCP 委派" ==> X
+    X -. "獨立 review / 驗證" .-> C
+```
+
 ---
 
 ## 為什麼需要這個

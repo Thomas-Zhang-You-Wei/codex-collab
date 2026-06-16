@@ -8,6 +8,20 @@ Two AI coding agents — **Claude** (Anthropic, Claude Code) and **Codex** (Open
 
 This is **peer collaboration, not handoff.** Nobody is "leaving" and passing a baton. Both agents are equal authors of one living journal, with a defined division of labor and a verifiable handoff field on every entry.
 
+```mermaid
+flowchart LR
+    C["🟣 <b>Claude</b> (lead)<br/>plan · implement · run · verify"]
+    J[("📓 <b>collab_log/</b><br/>append-only daily journal<br/><i>the only shared memory</i>")]
+    X["🟢 <b>Codex</b> (second opinion)<br/>review · alternatives · bug hunt"]
+
+    C -- "read on start" --> J
+    C -- "write entry on finish" --> J
+    X -- "read on start" --> J
+    X -- "write entry on finish" --> J
+    C == "delegate via Codex MCP" ==> X
+    X -. "independent review / verify" .-> C
+```
+
 ---
 
 ## Why this exists
