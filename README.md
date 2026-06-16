@@ -4,11 +4,11 @@ English | [繁體中文](README.zh-Hant.md)
 
 **A Claude Code skill that makes Claude and Codex co-own one project through a shared, append-only daily journal.**
 
-Two AI coding agents — **Claude** (Anthropic, Claude Code) and **Codex** (OpenAI, Codex CLI) — work on the same repo. They don't share memory. Their only shared memory is a `collab_log/` folder of daily handoff entries that *both* agents read on start and write on finish.
+Two AI coding agents work on the same repo: **Claude** (Anthropic, Claude Code) and **Codex** (OpenAI, Codex CLI). They don't share memory. Their only shared memory is a `collab_log/` folder of daily handoff entries that *both* agents read on start and write on finish.
 
 This is **peer collaboration, not handoff.** Nobody is "leaving" and passing a baton. Both agents are equal authors of one living journal, with a defined division of labor and a verifiable handoff field on every entry.
 
-And because every round is written down, you get to read the whole back-and-forth — who did what, what was verified, what's still open. **You stop being the messenger between two AIs and become the reviewer watching over both.**
+And because every round is written down, you get to read the whole back-and-forth: who did what, what was verified, what's still open. **You stop being the messenger between two AIs and become the reviewer watching over both.**
 
 ```mermaid
 flowchart LR
@@ -34,19 +34,19 @@ Plenty of tools let Claude and Codex talk to each other (MCP bridges) or let one
 |---|---|---|
 | Handoff skills (`HANDOFF.md`, etc.) | One-shot context doc for the *next* agent | Continuous co-ownership, not a one-time baton pass |
 | `session-handoff` (`SESSION_LOG.md`) | Single overwritten file, session memory | **Per-day append-only files + index** (full history), peer division of labor, wires *both* `CLAUDE.md` and `AGENTS.md` |
-| MCP bridges / Byterover | Call-and-respond, or external memory service | **Zero dependency** — plain markdown in your repo, human-readable, git-friendly |
+| MCP bridges / Byterover | Call-and-respond, or external memory service | **Zero dependency.** Plain markdown in your repo, human-readable, git-friendly |
 | Orchestrators (kanban, daemons, fleets) | Heavyweight multi-agent platforms | One skill + a folder. No infra. |
 
-In short: the *mechanism* (a shared markdown log) isn't new — the **specific packaging** is: an append-only daily journal with a `did / verify / files / handoff` schema, peer framing, dual-file wiring, and Codex-MCP delegation, all in plain markdown.
+In short: the *mechanism* (a shared markdown log) isn't new. The **specific packaging** is: an append-only daily journal with a `did / verify / files / handoff` schema, peer framing, dual-file wiring, and Codex-MCP delegation, all in plain markdown.
 
 ---
 
 ## How it works
 
-1. **Bootstrap once per project** — creates `collab_log/INDEX.md` + today's day file, and pastes an "Always Do First" block into both `CLAUDE.md` (for Claude) and `AGENTS.md` (for Codex) so both agents are routed to the journal.
-2. **On start** — read `INDEX.md` (rules + the live `🔴 現在進行中 / open threads` block + recent summaries) and today's day file.
-3. **On finish** — prepend an entry to today's day file and overwrite the open-threads block.
-4. **Delegate to Codex** — Claude calls Codex via the Codex MCP for an independent second opinion / review / alternative, then logs the result.
+1. **Bootstrap once per project.** Creates `collab_log/INDEX.md` + today's day file, and pastes an "Always Do First" block into both `CLAUDE.md` (for Claude) and `AGENTS.md` (for Codex) so both agents are routed to the journal.
+2. **On start.** Read `INDEX.md` (rules + the live `🔴 In progress / open threads` block + recent summaries) and today's day file.
+3. **On finish.** Prepend an entry to today's day file and overwrite the open-threads block.
+4. **Delegate to Codex.** Claude calls Codex via the Codex MCP for an independent second opinion / review / alternative, then logs the result.
 
 The journal is **dual-track**: history is append-only (auditable, never edited), while the single "open threads" block is overwritten each session (always current, cheap to read).
 
@@ -55,7 +55,7 @@ The journal is **dual-track**: history is append-only (auditable, never edited),
 - **Claude (lead):** planning, implementation, running the server, screenshot verification, writing the log.
 - **Codex (second opinion):** code review, alternative approaches, bug hunting, copy/layout review, independent verification.
 
-Adjustable per project — but "whoever touched what gets written to the log" is non-negotiable.
+Adjustable per project, but "whoever touched what gets written to the log" is non-negotiable.
 
 ---
 
@@ -71,14 +71,14 @@ Then in any project, tell Claude: **「啟動 codex 協作」** / "start codex c
 
 ### Requirements
 
-- **Claude Code** with a **paid Claude plan** (Pro or Max), or Anthropic API billing — the skill runs here, and this is the only thing you have to pay for.
+- **Claude Code** with a **paid Claude plan** (Pro or Max), or Anthropic API billing. The skill runs here, and this is the only thing you have to pay for.
 - **Codex CLI** registered as an MCP server, so Claude can delegate to it:
   ```bash
   claude mcp add --scope user codex -- codex mcp-server
   ```
-- **A ChatGPT account for Codex — the free tier is enough.** Codex is included on the **free** ChatGPT plan (and Go/Plus/Pro/Business/Edu/Enterprise); the free tier just has a tighter rolling-window rate limit, so heavy back-to-back delegation may hit a brief pause. Sign in with your ChatGPT account, no API key required. ([OpenAI docs](https://help.openai.com/en/articles/11369540-using-codex-with-your-chatgpt-plan))
+- **A ChatGPT account for Codex (the free tier is enough).** Codex is included on the **free** ChatGPT plan (and Go/Plus/Pro/Business/Edu/Enterprise); the free tier just has a tighter rolling-window rate limit, so heavy back-to-back delegation may hit a brief pause. Sign in with your ChatGPT account, no API key required. ([OpenAI docs](https://help.openai.com/en/articles/11369540-using-codex-with-your-chatgpt-plan))
 
-> **Cost in one line:** the only paid requirement is a Claude subscription. Codex runs on its free quota — you'd only need a paid ChatGPT plan if you regularly hit the free rate limit.
+> **Cost in one line:** the only paid requirement is a Claude subscription. Codex runs on its free quota; you'd only need a paid ChatGPT plan if you regularly hit the free rate limit.
 
 ---
 
@@ -104,4 +104,4 @@ codex-collab/
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT. See [LICENSE](LICENSE).
