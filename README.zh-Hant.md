@@ -4,9 +4,16 @@
 
 **一個 Claude Code skill,讓 Claude 和 Codex 透過一份共享、append-only 的每日日誌,共同擁有同一個專案。**
 
-兩個 AI coding agent 在同一個 repo 上工作:**Claude**(Anthropic, Claude Code)與 **Codex**(OpenAI, Codex CLI)。它們不共享記憶,唯一的共同記憶是專案根目錄的 `collab_log/` 資料夾:一份每日交接日誌,**兩個 agent 開工時都讀、收工時都寫**。
+我常常同時開著 **Claude**(Anthropic, Claude Code)與 **Codex**(OpenAI, Codex CLI)寫同一個專案。不同模型各有所長,讓它們互相檢查,能避開只信單一模型的盲點。
 
-這是 **對等協作(peer collaboration),不是交棒(handoff)**。沒有誰要「離開」並把棒子交給下一個。兩個 agent 是同一本活日誌的平等作者,有明確分工,每筆 entry 都帶一個可驗證的 handoff 欄位。
+但兩個不共享記憶的 agent,帶給我兩個痛點:
+
+1. **我變成它們的傳話筒。** Claude 寫完 code,我想叫 Codex review,但 Codex 根本不知道 Claude 剛剛做了什麼、為什麼那樣做。於是我整天手動把 context 複製貼上、搬來搬去。
+2. **我看不清它們到底怎麼合作的。** 沒有共同的軌跡,沒辦法知道每一輪各自做了什麼。
+
+我要的其實很簡單:給兩個失憶的 agent 一本共享記事本,並讓**我**能清楚看到它們每一輪各做了什麼。
+
+它們唯一的共同記憶,是專案根目錄的 `collab_log/` 資料夾:一份每日交接日誌,**兩個 agent 開工時都讀、收工時都寫**。這是 **對等協作(peer collaboration),不是交棒(handoff)**:沒有誰要「離開」並把棒子交給下一個,兩個 agent 是同一本活日誌的平等作者,有明確分工,每筆 entry 都帶一個可驗證的 handoff 欄位。
 
 而且因為每一輪都被寫下來,你能讀到完整的來回:誰做了什麼、驗證了沒、還有什麼開著。**你不再是夾在兩個 AI 中間的傳話筒,而是變成在上面盯著它們的監督者。**
 
@@ -49,6 +56,8 @@ flowchart LR
 4. **委派 Codex**:Claude 透過 Codex MCP 找它要獨立的第二意見 / review / 替代方案,再把結果寫進日誌。
 
 日誌是**雙軌**:歷史 append-only(可稽核、永不修改),而單一的「現在進行中」區塊每個 session 覆寫(永遠是最新、讀起來便宜)。
+
+而且日誌是**按日期切**的(每天一檔 + 一份單日總結),不會愈滾愈大成一個巨型檔案。debug 時點進任一天就能看出卡在哪;日後要做專案回顧,把每日總結往回讀就行。
 
 ### 預設分工
 

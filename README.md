@@ -4,9 +4,16 @@ English | [繁體中文](README.zh-Hant.md)
 
 **A Claude Code skill that makes Claude and Codex co-own one project through a shared, append-only daily journal.**
 
-Two AI coding agents work on the same repo: **Claude** (Anthropic, Claude Code) and **Codex** (OpenAI, Codex CLI). They don't share memory. Their only shared memory is a `collab_log/` folder of daily handoff entries that *both* agents read on start and write on finish.
+I often keep **Claude** (Anthropic, Claude Code) and **Codex** (OpenAI, Codex CLI) open on the same project. Different models have different strengths, and letting them check each other's work avoids the blind spots of trusting just one.
 
-This is **peer collaboration, not handoff.** Nobody is "leaving" and passing a baton. Both agents are equal authors of one living journal, with a defined division of labor and a verifiable handoff field on every entry.
+But two agents that don't share memory created two problems for me:
+
+1. **I became their messenger.** Claude writes code, I want Codex to review it, but Codex has no idea what Claude just did or why. So I copy-pasted context back and forth, all day.
+2. **I couldn't see how they were actually collaborating.** No shared trail, no way to tell what each one did, round by round.
+
+What I wanted was simple: give two amnesiac agents one shared notebook, and give *me* a clear view of what each did every round.
+
+Their only shared memory is a `collab_log/` folder of daily handoff entries that *both* agents read on start and write on finish. This is **peer collaboration, not handoff.** Nobody is "leaving" and passing a baton: both agents are equal authors of one living journal, with a defined division of labor and a verifiable handoff field on every entry.
 
 And because every round is written down, you get to read the whole back-and-forth: who did what, what was verified, what's still open. **You stop being the messenger between two AIs and become the reviewer watching over both.**
 
@@ -49,6 +56,8 @@ In short: the *mechanism* (a shared markdown log) isn't new. The **specific pack
 4. **Delegate to Codex.** Claude calls Codex via the Codex MCP for an independent second opinion / review / alternative, then logs the result.
 
 The journal is **dual-track**: history is append-only (auditable, never edited), while the single "open threads" block is overwritten each session (always current, cheap to read).
+
+Because the log is split by date (one file per day, plus a daily summary), it never snowballs into one giant file. When debugging, open any day to see exactly where things got stuck; for a project retrospective, just read the daily summaries back.
 
 ### Default division of labor
 
