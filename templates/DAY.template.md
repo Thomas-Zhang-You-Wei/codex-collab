@@ -1,9 +1,9 @@
-# {{DATE}} — Claude ⇄ Codex 協作日誌
+# {{DATE}} — Claude ⇄ Codex collaboration journal
 
-> 規則與每日索引見 [`INDEX.md`](INDEX.md)。本檔只放當天的逐條 entry（最新在上）。
+> Rules and the daily index are in [`INDEX.md`](INDEX.md). This file holds only today's entries (newest on top).
 
-## 當日總結
-⏳（隔天開工時補寫）
+## Daily summary
+⏳ (backfilled at the next day's start ritual)
 
 ---
 

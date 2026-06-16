@@ -1,36 +1,35 @@
-# COLLAB_LOG — Claude ⇄ Codex 協作日誌（索引）— Acme Web
+# COLLAB_LOG — Claude ⇄ Codex collaboration journal (index) — Acme Web
 
-兩個 AI agent 在本專案上的交接日誌：**Claude**（Anthropic, Claude Code）與 **Codex**（OpenAI, Codex CLI）。
-兩者不共享記憶，這個資料夾就是彼此同步的唯一管道。
+Handoff journal for two AI agents on this project: **Claude** (Anthropic, Claude Code) and **Codex** (OpenAI, Codex CLI). They don't share memory; this folder is their only sync channel.
 
-每天一個檔案 `YYYY-MM-DD.md`，避免單一檔案無限膨脹。本檔（INDEX.md）只放**規則**、**「現在進行中」區塊**與**每日一句話索引**。
-
----
-
-## 🔴 現在進行中（open threads）
-
-> 這是本日誌**唯一可覆寫**的區塊：每次收工時直接改寫成最新狀態，**不保留歷史**。開工時讀這一塊就知道現況。
-
-- ⏳ 結帳 API 的 rate-limit middleware 已實作，**待 Codex 獨立驗證**並發 PR（見今天日檔最上方 entry 的 handoff）。
-- 🟢 登入頁改版已上線，無 open thread。
+One file per day `YYYY-MM-DD.md`. This file (INDEX.md) holds only **rules**, the **"In progress" block**, and a **one-line-per-day index**.
 
 ---
 
-## 開工流程（每個 session，動程式前）
-1. **讀本檔 `INDEX.md`** —— 規則 +「🔴 現在進行中」區塊 + 最近幾天的摘要。
-2. **讀「今天」的日期檔** `collab_log/<今天日期>.md`；不存在就用範本新建。
-3. **補寫昨天的總結（若還沒寫）**：用 `Grep pattern="⏳" path=collab_log/INDEX.md` 定位待補的日子，補完總結並把該列改 ✅。
+## 🔴 In progress (open threads)
 
-## 收工流程（完成一個工作單元後）
-1. 在**今天**的日期檔，`# Entries` 區、最新在上，append 一條 entry。
-2. **覆寫上面的「🔴 現在進行中」區塊**。
-3. 不刪歷史、不改別人的舊 entry。當 handoff 標「需驗證」時，接手方要實際跑過再勾。
+> The **only overwritable** block: overwrite with the latest state at each finish ritual, **no history kept**. Read this at the start to know the current state.
+
+- ⏳ Rate-limit middleware for the checkout API is implemented, **awaiting independent verification by Codex** and a PR (see the handoff in the top entry of today's day file).
+- 🟢 Login page redesign shipped, no open thread.
 
 ---
 
-## 每日索引（最新在上）
+## Start ritual (every session, before touching code)
+1. **Read this `INDEX.md`** — rules + "🔴 In progress" block + recent summaries.
+2. **Read today's day file** `collab_log/<today>.md`; create from the template if missing.
+3. **Backfill yesterday's summary (if not done):** use `Grep pattern="⏳" path=collab_log/INDEX.md` to locate the day to backfill, write the summary, and flip that row to ✅.
 
-| 日期 | 一句話摘要 | 總結 |
-|------|-----------|------|
-| 2026-06-16 | 結帳 API 加上 rate-limit middleware；Codex review 抓到一個邊界 bug | ⏳ |
-| 2026-06-15 | 登入頁改版、Codex 審英文文案 | ✅ |
+## Finish ritual (after completing a unit of work)
+1. In **today's** day file, `# Entries` section, newest on top, prepend one entry.
+2. **Overwrite the "🔴 In progress" block above.**
+3. Never delete history, never edit someone else's old entry. When a handoff is marked "needs verification", the receiver must actually run it before ticking it off.
+
+---
+
+## Daily index (newest on top)
+
+| Date | One-line summary | Summary |
+|------|------------------|---------|
+| 2026-06-16 | Added rate-limit middleware to checkout API; Codex review caught a boundary bug | ⏳ |
+| 2026-06-15 | Login page redesign; Codex reviewed English copy | ✅ |

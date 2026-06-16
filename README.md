@@ -1,3 +1,5 @@
+English | [繁體中文](README.zh-Hant.md)
+
 # codex-collab
 
 **A Claude Code skill that makes Claude and Codex co-own one project through a shared, append-only daily journal.**
@@ -66,17 +68,19 @@ Then in any project, tell Claude: **「啟動 codex 協作」** / "start codex c
 
 ```
 codex-collab/
-├── SKILL.md                     ← the skill (workflow + rules)
-├── templates/
+├── SKILL.md                     ← the skill (English; what Claude Code loads)
+├── templates/                   ← English templates
 │   ├── INDEX.template.md        ← collab_log index (rules + open-threads + day index)
 │   ├── DAY.template.md          ← daily file template
 │   ├── CLAUDE-snippet.md        ← paste into project CLAUDE.md (routes Claude to the log)
 │   └── AGENTS-snippet.md        ← paste into project AGENTS.md (routes Codex to the log)
-└── examples/
-    └── collab_log/              ← a worked example you can read to learn the format
+├── examples/
+│   └── collab_log/              ← a worked example you can read to learn the format
+└── i18n/
+    └── zh-Hant/                 ← Traditional Chinese version (SKILL + templates + examples)
 ```
 
-> Note: the skill prompts and templates are currently in **Traditional Chinese (zh-Hant)**. An English translation is on the roadmap — contributions welcome.
+> Localization: the default `SKILL.md` and templates at the repo root are in **English**. A **Traditional Chinese (zh-Hant)** version lives in [`i18n/zh-Hant/`](i18n/zh-Hant/). To run the skill in Chinese, copy that folder's files over the root ones when cloning. Other language contributions welcome.
 
 ---
 

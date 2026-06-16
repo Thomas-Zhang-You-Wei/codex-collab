@@ -1,49 +1,48 @@
-# COLLAB_LOG — Claude ⇄ Codex 協作日誌（索引）— {{PROJECT_NAME}}
+# COLLAB_LOG — Claude ⇄ Codex collaboration journal (index) — {{PROJECT_NAME}}
 
-兩個 AI agent 在本專案上的交接日誌：**Claude**（Anthropic, Claude Code）與 **Codex**（OpenAI, Codex CLI）。
-兩者不共享記憶，這個資料夾就是彼此同步的唯一管道。
+Handoff journal for two AI agents on this project: **Claude** (Anthropic, Claude Code) and **Codex** (OpenAI, Codex CLI). They don't share memory; this folder is their only sync channel.
 
-每天一個檔案 `YYYY-MM-DD.md`，避免單一檔案無限膨脹。本檔（INDEX.md）只放**規則**、**「現在進行中」區塊**與**每日一句話索引**——回顧時讀這裡就夠，要細節再點進當天檔案。
-
----
-
-## 🔴 現在進行中（open threads）
-
-> 這是本日誌**唯一可覆寫**的區塊：每次收工時直接改寫成最新狀態，**不保留歷史**（歷史在下面各日檔的 entry 裡）。開工時讀這一塊就知道現況，不必掃 entry 重建。
-
-- （目前沒有進行中的工作）
+One file per day `YYYY-MM-DD.md`, to keep any single file from growing forever. This file (INDEX.md) holds only **rules**, the **"In progress" block**, and a **one-line-per-day index** — read here for a recap, click into a day file for detail.
 
 ---
 
-## 開工流程（每個 session，動程式前）
-1. **讀本檔 `INDEX.md`** —— 規則 +「🔴 現在進行中」區塊 + 最近幾天的摘要。
-2. **讀「今天」的日期檔** `collab_log/<今天日期>.md`；不存在就用下面的範本新建（含空的 `## 當日總結` 區塊）。
-3. **補寫昨天的總結（若還沒寫）**：用 `Grep pattern="⏳" path=collab_log/INDEX.md` 直接定位總結欄還是 ⏳ 的舊日子（不要 Read 整檔再人工掃），讀完它所有 entry，在該檔的 `## 當日總結` 寫 3–6 行（今天整體做了什麼、還開著什麼），並回來更新下方索引表那一行為 ✅。
+## 🔴 In progress (open threads)
 
-## 收工流程（完成一個工作單元後）
-1. 在**今天**的日期檔，**`# Entries` 區、最新在上**，append 一條 entry（用下方範本）。
-2. **覆寫上面的「🔴 現在進行中」區塊**，反映最新的 open threads（做完的拿掉、新開的加上）。
-3. 不刪歷史、不改別人的舊 entry。
+> This is the **only overwritable** block in the journal: overwrite it with the latest state at each finish ritual, **no history kept** (history lives in each day file's entries). Reading this block at the start tells you the current state without scanning entries.
 
-> 註：當日總結採「**隔天開工補寫**」——任何 agent 隔天第一個 session 負責回填前一天的總結。所以當天的總結欄在隔天前會是 ⏳，正常。
+- (no work in progress)
 
-### Entry 範本
+---
+
+## Start ritual (every session, before touching code)
+1. **Read this `INDEX.md`** — rules + "🔴 In progress" block + recent summaries.
+2. **Read "today's" day file** `collab_log/<today>.md`; create it from the template below if missing (with an empty `## Daily summary` block).
+3. **Backfill yesterday's summary (if not done):** use `Grep pattern="⏳" path=collab_log/INDEX.md` to locate the day whose summary column is still ⏳ (don't Read the whole file and scan by hand), read all its entries, write 3–6 lines in its `## Daily summary` (what got done overall, what's still open), and update that row below to ✅.
+
+## Finish ritual (after completing a unit of work)
+1. In **today's** day file, in the `# Entries` section, **newest on top**, prepend one entry (use the template below).
+2. **Overwrite the "🔴 In progress" block above** to reflect the latest open threads (drop finished, add new).
+3. Never delete history, never edit someone else's old entry.
+
+> Note: daily summaries are written the **next day** — the first session of the next day backfills the previous day's summary. So today's summary column stays ⏳ until tomorrow; that's normal.
+
+### Entry template
 ```
-## [YYYY-MM-DD HH:MM TZ] <Claude | Codex> — <一句話標題>
-- did: <做了什麼 / 決定了什麼>
-- verify: <怎麼驗證的，或 "not verified">
-- files: <動到的路徑，或 "review only — no edits">
-- handoff: <對方該知道 / 該驗證 / 該接手的事>
+## [YYYY-MM-DD HH:MM TZ] <Claude | Codex | Codex (via MCP)> — <one-line title>
+- did: <what you did / decided>
+- verify: <how you verified, or "not verified">
+- files: <paths touched, or "review only — no edits">
+- handoff: <what the other agent should know / verify / pick up>
 ```
 
-### 日檔範本
+### Day file template
 ```
-# YYYY-MM-DD — Claude ⇄ Codex 協作日誌
+# YYYY-MM-DD — Claude ⇄ Codex collaboration journal
 
-> 規則與每日索引見 [`INDEX.md`](INDEX.md)。本檔只放當天的逐條 entry（最新在上）。
+> Rules and the daily index are in [`INDEX.md`](INDEX.md). This file holds only today's entries (newest on top).
 
-## 當日總結
-⏳（隔天開工時補寫）
+## Daily summary
+⏳ (backfilled at the next day's start ritual)
 
 ---
 
@@ -52,7 +51,7 @@
 
 ---
 
-## 每日索引（最新在上）
+## Daily index (newest on top)
 
-| 日期 | 一句話摘要 | 總結 |
-|------|-----------|------|
+| Date | One-line summary | Summary |
+|------|------------------|---------|
