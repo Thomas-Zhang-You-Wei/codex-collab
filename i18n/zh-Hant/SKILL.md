@@ -40,8 +40,9 @@ Codex 用 ChatGPT 帳號登入（無 API key、無額外費用，rolling window 
 ## Step 2 — 開工流程（每個 session，動程式前）
 
 1. 讀 `collab_log/INDEX.md`（規則 +「🔴 現在進行中」區塊 + 最近幾天摘要）。讀這個區塊就知道現況，不必掃 entry 重建。
-2. 讀今天的日檔；不存在就從範本新建。
-3. 補寫前一天的總結：用 `Grep pattern="⏳" path=collab_log/INDEX.md` 定位總結欄還是 ⏳ 的日子（不要 Read 整檔人工掃），讀完該檔所有 entry，在其 `## 當日總結` 寫 3–6 行（整體做了什麼、還開著什麼），並更新 INDEX.md 該列為 ✅。
+2. **核對區塊與現實**：把「現在進行中」的每一條對照 `git status --short` 與近期 `git log`；只要有一條不再成立（例如寫著「X 未提交」但工作區是乾淨的），當場修正區塊。這是開工儀式的一部分，不是可做可不做的清理——過期的區塊會把下一個 agent 帶進錯誤的方向。
+3. 讀今天的日檔；不存在就從範本新建。
+4. 補寫前一天的總結：用 `Grep pattern="⏳" path=collab_log/INDEX.md` 定位總結欄還是 ⏳ 的日子（不要 Read 整檔人工掃），讀完該檔所有 entry，在其 `## 當日總結` 寫 3–6 行（整體做了什麼、還開著什麼），並更新 INDEX.md 該列為 ✅。
 
 ## Step 3 — 收工流程（完成一個工作單元後）
 
@@ -55,7 +56,8 @@ Codex 用 ChatGPT 帳號登入（無 API key、無額外費用，rolling window 
 - handoff: <對方該知道 / 該驗證 / 該接手的事>
 ```
 
-2. **覆寫 INDEX 的「🔴 現在進行中」區塊**：做完的 thread 拿掉、新開的加上。歷史進日檔，現況進這塊。
+2. **覆寫 INDEX 的「🔴 現在進行中」區塊**：做完的 thread 拿掉、新開的加上。歷史進日檔，現況進這塊。**沒更新這個區塊就不算收工**——只寫 entry 不改區塊，是兩個 agent 失去同步最常見的原因。
+3. 專案有 git 的話，日誌變更跟工作一起 commit；沒 commit 的日誌，對在其他地方 pull 這個 repo 的人是看不見的。
 
 規則：不刪歷史、不改別人的舊 entry。
 
@@ -69,9 +71,28 @@ Codex 用 ChatGPT 帳號登入（無 API key、無額外費用，rolling window 
 - 典型委派：review 剛寫好的 diff、對同一問題出替代方案、英文文案審稿、獨立重現 bug。
 - Codex 的回覆只有你看得到——把結論**轉述給使用者**，重要結論也寫進日誌。
 
+## Step 4.5 — Codex 的沙盒限制：連網 / 裝套件（委派前必看）
+
+「Claude 當大腦、Codex 當手」會踩到的最大坑：**Codex 的沙盒不能連網**。
+
+- MCP 預設 `sandbox=workspace-write` **封鎖對外網路**。純讀檔、改既有程式碼都沒問題，但**任何要連網的步驟都會失敗**——最常見是 `npm install` 新套件（`ENOTFOUND registry.npmjs.org`），也包括抓遠端資源、打外部 API。
+- 更糟：預設 `approval-policy=on-failure` 下 Codex **不能自己升權**重跑（會被回 *"cannot ask for escalated permissions if the approval policy is OnFailure"*）。於是它在「裝不了又升不了權」之間**空轉到使用者手動中斷**。表面像 Codex「拒絕」或「當機」，其實是環境死結——**不是限流、也不是它罷工**。
+- **分工原則：連網的事由 Claude（大腦）先處理好，再把純改碼交給 Codex（手）。** 兩種做法擇一：
+  1. **Claude 先裝**（推薦）：委派需要新依賴的任務前，先在本機 `npm install <pkg>`（Claude 不受網路限制）。裝好後 Codex 在離線沙盒就能完成程式碼改動 + type-check。
+  2. **給 Codex 連網權**：委派時 `mcp__codex__codex` 帶 `sandbox=danger-full-access` + `approval-policy=never`，它就能自己連 registry。⚠️ 全權限＝不設防，只在信任的本機專案用。
+- **委派前自問一句**：這個任務有沒有「裝新套件 / 抓遠端資源 / 打 API」？有 → 先照上面處理，別讓 Codex 撞牆。
+- **診斷卡住的 Codex**：讀 `~/.codex/sessions/<年>/<月>/<日>/rollout-*.jsonl`，結尾停在 `role=user` / `turn_aborted` ＝卡住；長時 goal 狀態看 `~/.codex/goals_1.sqlite` 的 `thread_goals`。
+
 ## 紅線
 
+- **委派「要裝新套件 / 連網」的任務前，先由 Claude 裝好、或開 `danger-full-access`**；別把連網步驟丟進預設沙盒，否則 Codex 會空轉到被中斷（見 Step 4.5）。
+
 - 永遠不要跳過開工的「讀日誌」與收工的「寫 entry + 覆寫現在進行中」——這是兩個 agent 唯一的共同記憶。
+- **「現在進行中」只放 open threads——不放 git 已經記錄的工作區狀態**（未提交檔案、WIP diff）。這種描述在任何人 commit 的瞬間就過期；git 才是權威。發現不一致：以 git 為準、修正區塊（見開工儀式）。
 - INDEX.md 只放規則、「現在進行中」區塊和一句話索引，細節全進日檔；單檔不膨脹。
 - **handoff 標「需驗證」時，接手方要實際跑過（build / 測試 / 重現）再在新 entry 的 `verify` 記結果**，不能憑對方「我修好了」就打勾。獨立驗證才是雙 agent 比單 agent 強的地方。
 - 同一件事兩個 agent 都動過時，entry 要寫清楚誰改了哪部分，避免互相覆蓋。
+
+## 維護這個 skill
+
+事實來源是 GitHub repo `codex-collab`（根目錄英文版、`i18n/` 中文版）。要改 skill：先改 repo（兩個語言一起改），再把 zh-Hant 的 `SKILL.md` + `templates/` 複製到 `~/.claude/skills/codex-collab/`。**絕不要只改安裝版**——2026-06-28 的沙盒死結段落就是只改了安裝版，跟 repo 漂移了十天才被意外發現。
